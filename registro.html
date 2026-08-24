@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promesa de Fe Misionera</title>
+<style>
+  :root {
+    --bg: #f2f0e6;
+    --card-bg: #ffffff;
+    --accent: #1f5c4a;
+    --accent-dark: #143f34;
+    --text: #2b2420;
+    --text-muted: #6b6259;
+    --border: #d7d0bf;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 40px 16px 60px;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; text-align: center; }
+  .logo {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+  .logo .logo-eyebrow {
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0.3px;
+  }
+  .logo .logo-name {
+    display: block;
+    font-size: 3.1rem;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -1px;
+  }
+  h1 {
+    font-size: 1.8rem;
+    margin: 0 0 6px;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+  p.subtitle { margin: 0; color: var(--text-muted); font-style: italic; font-size: 0.95rem; }
+  p.disclaimer {
+    margin-top: 8px;
+    font-style: normal;
+    font-size: 0.7rem;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    font-weight: bold;
+  }
+  .verse {
+    margin: 26px auto;
+    max-width: 460px;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding: 16px 18px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 34px 28px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+  }
+  .card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 0 0 26px;
+  }
+  .btn-registro {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-weight: bold;
+    font-size: 1.15rem;
+    padding: 16px 40px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+  }
+  .btn-registro:hover { background: var(--accent-dark); }
+  .hint {
+    margin-top: 30px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .hint code {
+    background: #ece7d9;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.76rem;
+  }
+  .bank-card {
+    margin-top: 20px;
+    text-align: left;
+  }
+  .bank-card h2 {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.95rem;
+    color: var(--accent-dark);
+    margin: 0 0 14px;
+    text-align: center;
+  }
+  .bank-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+  }
+  .bank-row:last-child { border-bottom: none; }
+  .bank-row .label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .bank-row .value {
+    font-size: 0.95rem;
+    color: var(--text);
+    font-weight: bold;
+    text-align: right;
+  }
+  .bank-row .value a { color: var(--accent-dark); text-decoration: none; }
+  .bank-row .value a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">
+    <span class="logo-eyebrow">Iglesia Cristiana</span>
+    <span class="logo-name">Jerusalén</span>
+  </div>
+  <h1>Promesa de Fe Misionera</h1>
+  <p class="subtitle">Registro de compromiso con las misiones</p>
+  <p class="disclaimer">Mi promesa de fe no es mi diezmo</p>
+
+  <div class="verse">
+    "La mies a la verdad es mucha, mas los obreros pocos; por tanto, rogad al Señor de la mies, que envíe obreros a su mies." — Lucas 10:2
+  </div>
+
+  <div class="card">
+    <p>Si deseas comprometerte con la obra misionera de nuestra iglesia, regístrate a continuación.</p>
+    <a class="btn-registro" id="registroBtn" href="#" target="_blank" rel="noopener">Registrarme</a>
+  </div>
+
+  <div class="card bank-card">
+    <h2>¿Prefieres hacer tu promesa por transferencia bancaria?</h2>
+    <div class="bank-row"><span class="label">Titular</span><span class="value">Iglesia Cristiana Jerusalén</span></div>
+    <div class="bank-row"><span class="label">Banco</span><span class="value">Banco de América Central</span></div>
+    <div class="bank-row"><span class="label">Tipo de cuenta</span><span class="value">Cuenta de ahorro</span></div>
+    <div class="bank-row"><span class="label">Número de cuenta</span><span class="value">116396714</span></div>
+    <div class="bank-row"><span class="label">Comprobante a</span><span class="value"><a href="mailto:icjerusalen01@gmail.com">icjerusalen01@gmail.com</a></span></div>
+  </div>
+
+  <p class="hint" id="hintMsg">
+    ⚠️ Falta conectar el enlace del Google Form.<br>
+    Abre este archivo con un editor de texto, busca la línea que dice
+    <code>const GOOGLE_FORM_URL</code> y pega ahí la URL de tu formulario.
+  </p>
+</div>
+
+<script>
+  // Pega aquí la URL de tu Google Form una vez creado, por ejemplo:
+  // "https://forms.gle/xxxxxxxxxxxx"
+  const GOOGLE_FORM_URL = "";
+
+  const btn = document.getElementById('registroBtn');
+  const hint = document.getElementById('hintMsg');
+
+  if (GOOGLE_FORM_URL) {
+    btn.href = GOOGLE_FORM_URL;
+    hint.style.display = 'none';
+  } else {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      alert('Aún no se ha configurado el enlace del Google Form. Ver instrucciones debajo del botón.');
+    });
+  }
+</script>
+</body>
+</html>

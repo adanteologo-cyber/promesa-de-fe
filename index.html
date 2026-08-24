@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Promesa de Fe</title>
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --card-bg: #ffffff;
+    --accent: #8b2635;
+    --accent-dark: #6b1c29;
+    --text: #2b2420;
+    --text-muted: #6b6259;
+    --border: #d9cfc0;
+    --gold: #b8860b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px 16px 60px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  header h1 {
+    font-size: 1.9rem;
+    margin: 0 0 6px;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+  }
+  header p {
+    margin: 0;
+    color: var(--text-muted);
+    font-style: italic;
+    font-size: 0.95rem;
+  }
+  .verse {
+    text-align: center;
+    max-width: 520px;
+    margin: 0 auto 28px;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    margin-bottom: 24px;
+  }
+  .card h2 {
+    font-size: 1.1rem;
+    color: var(--accent-dark);
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    display: inline-block;
+  }
+  .field { margin-bottom: 16px; }
+  label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-weight: bold;
+  }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"], select, textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+    background: #fffdf9;
+    color: var(--text);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .row .field { flex: 1; min-width: 200px; }
+  .radio-group, .check-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .radio-group label, .check-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: normal;
+    color: var(--text);
+    background: #fffdf9;
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.92rem;
+  }
+  .radio-group input, .check-group input { width: auto; margin: 0; }
+  .radio-group label:has(input:checked), .check-group label:has(input:checked) {
+    border-color: var(--accent);
+    background: #fbeceb;
+  }
+  .amount-row { display: flex; gap: 10px; align-items: flex-end; }
+  .amount-row .field { flex: 1; }
+  textarea { resize: vertical; min-height: 70px; }
+  .sig-line {
+    margin-top: 10px;
+    border-bottom: 1px solid var(--text);
+    height: 40px;
+  }
+  .sig-label { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 12px 22px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent-dark); }
+  .btn-secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+  .btn-secondary:hover { background: #fbeceb; }
+  .list-section h2 { font-size: 1.05rem; color: var(--accent-dark); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--border); }
+  th { color: var(--text-muted); font-size: 0.78rem; text-transform: uppercase; }
+  .empty-msg { color: var(--text-muted); font-style: italic; padding: 10px 0; }
+  .row-actions { display: flex; gap: 8px; }
+  .row-actions button { padding: 5px 10px; font-size: 0.8rem; }
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--accent-dark);
+    color: #fff;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    opacity: 0;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .list-section, .actions, .verse ~ .card + .card { display: none; }
+    .card { box-shadow: none; border: 1px solid #999; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>✝ Promesa de Fe</h1>
+    <p>Tarjeta de Compromiso de Fidelidad</p>
+  </header>
+
+  <div class="verse">
+    "Traed todos los diezmos al alfolí y haya alimento en mi casa; y probadme ahora en esto, dice Jehová de los ejércitos, si no os abriré las ventanas de los cielos, y derramaré sobre vosotros bendición hasta que sobreabunde." — Malaquías 3:10
+  </div>
+
+  <div class="card">
+    <h2>Datos del Promitente</h2>
+    <form id="pledgeForm">
+      <div class="row">
+        <div class="field">
+          <label for="nombre">Nombre completo *</label>
+          <input type="text" id="nombre" required>
+        </div>
+        <div class="field">
+          <label for="fecha">Fecha *</label>
+          <input type="date" id="fecha" required>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="telefono">Teléfono</label>
+          <input type="tel" id="telefono">
+        </div>
+        <div class="field">
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email">
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="direccion">Dirección</label>
+        <input type="text" id="direccion">
+      </div>
+
+      <div class="field">
+        <label>Propósito de la promesa</label>
+        <div class="check-group" id="proposito">
+          <label><input type="checkbox" value="Diezmo"> Diezmo</label>
+          <label><input type="checkbox" value="Ofrenda"> Ofrenda</label>
+          <label><input type="checkbox" value="Misiones"> Misiones</label>
+          <label><input type="checkbox" value="Construcción"> Construcción</label>
+          <label><input type="checkbox" value="Otro"> Otro</label>
+        </div>
+      </div>
+
+      <div class="amount-row">
+        <div class="field">
+          <label for="monto">Monto</label>
+          <input type="number" id="monto" min="0" step="0.01" placeholder="0.00">
+        </div>
+        <div class="field">
+          <label for="frecuencia">Frecuencia</label>
+          <select id="frecuencia">
+            <option value="Semanal">Semanal</option>
+            <option value="Quincenal">Quincenal</option>
+            <option value="Mensual" selected>Mensual</option>
+            <option value="Anual">Anual</option>
+            <option value="Única vez">Única vez</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="notas">Notas / motivo de la promesa</label>
+        <textarea id="notas" placeholder="Comparte brevemente por qué haces esta promesa de fe..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Firma</label>
+        <div class="sig-line"></div>
+        <div class="sig-label">Firma del promitente</div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn-primary">Guardar promesa</button>
+        <button type="button" class="btn-secondary" id="printBtn">Imprimir tarjeta</button>
+        <button type="reset" class="btn-secondary">Limpiar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card list-section">
+    <h2>Promesas registradas (<span id="count">0</span>)</h2>
+    <div id="tableWrap">
+      <p class="empty-msg" id="emptyMsg">Aún no hay promesas guardadas.</p>
+    </div>
+    <div class="actions" style="margin-top:14px;">
+      <button type="button" class="btn-secondary" id="exportBtn">Exportar a CSV</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'promesasDeFe';
+  const form = document.getElementById('pledgeForm');
+  const tableWrap = document.getElementById('tableWrap');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const countEl = document.getElementById('count');
+  const toast = document.getElementById('toast');
+
+  document.getElementById('fecha').valueAsDate = new Date();
+
+  function load() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function save(list) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  function render() {
+    const list = load();
+    countEl.textContent = list.length;
+
+    if (list.length === 0) {
+      tableWrap.innerHTML = '';
+      tableWrap.appendChild(emptyMsg);
+      return;
+    }
+
+    let html = '<table><thead><tr>' +
+      '<th>Nombre</th><th>Fecha</th><th>Propósito</th><th>Monto</th><th>Frecuencia</th><th></th>' +
+      '</tr></thead><tbody>';
+
+    list.forEach((p, i) => {
+      html += `<tr>
+        <td>${escapeHtml(p.nombre)}</td>
+        <td>${escapeHtml(p.fecha)}</td>
+        <td>${escapeHtml(p.proposito)}</td>
+        <td>${p.monto ? '$' + escapeHtml(p.monto) : '—'}</td>
+        <td>${escapeHtml(p.frecuencia)}</td>
+        <td class="row-actions"><button type="button" class="btn-secondary del-btn" data-idx="${i}">Eliminar</button></td>
+      </tr>`;
+    });
+
+    html += '</tbody></table>';
+    tableWrap.innerHTML = html;
+
+    tableWrap.querySelectorAll('.del-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.idx, 10);
+        const list = load();
+        list.splice(idx, 1);
+        save(list);
+        render();
+        showToast('Promesa eliminada');
+      });
+    });
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const fecha = document.getElementById('fecha').value;
+    if (!nombre || !fecha) return;
+
+    const proposito = Array.from(document.querySelectorAll('#proposito input:checked'))
+      .map(cb => cb.value).join(', ');
+
+    const entry = {
+      nombre,
+      fecha,
+      telefono: document.getElementById('telefono').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      direccion: document.getElementById('direccion').value.trim(),
+      proposito,
+      monto: document.getElementById('monto').value,
+      frecuencia: document.getElementById('frecuencia').value,
+      notas: document.getElementById('notas').value.trim()
+    };
+
+    const list = load();
+    list.push(entry);
+    save(list);
+    render();
+    showToast('Promesa guardada ✝');
+    form.reset();
+    document.getElementById('fecha').valueAsDate = new Date();
+  });
+
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const list = load();
+    if (list.length === 0) {
+      showToast('No hay promesas para exportar');
+      return;
+    }
+    const headers = ['Nombre', 'Fecha', 'Telefono', 'Email', 'Direccion', 'Proposito', 'Monto', 'Frecuencia', 'Notas'];
+    const rows = list.map(p => [p.nombre, p.fecha, p.telefono, p.email, p.direccion, p.proposito, p.monto, p.frecuencia, p.notas]);
+    const csv = [headers, ...rows]
+      .map(row => row.map(v => `"${(v || '').toString().replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+    const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'promesas-de-fe.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
